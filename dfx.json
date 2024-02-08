@@ -24,9 +24,9 @@
     "template_frontend": {
       "dependencies": ["template_backend", "internet_identity"],
       "frontend": {
-        "entrypoint": "out/index.html"
+        "entrypoint": "frontend/template/out/index.html"
       },
-      "source": ["out"],
+      "source": ["frontend/template/out"],
       "type": "assets"
     }
   },
