@@ -13,3 +13,5 @@ https://uxz2k-jyaaa-aaaal-adoia-cai.icp0.io/mint?id=826798517 - minting an NFT
 1. `dfx start --background`
 2. `cd frontend/template && npm install && npm run build && cd ../..`
 3. `./deploy.zsh`
+
+Consider renaming bapp to icapp or something
