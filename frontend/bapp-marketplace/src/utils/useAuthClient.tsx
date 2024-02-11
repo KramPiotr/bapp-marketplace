@@ -43,7 +43,7 @@ export const useAuthClient = (options = defaultOptions) => {
     AuthClient.create(options.createOptions).then(async (client) => {
       updateClient(client);
     });
-  }, []);
+  }, [options.createOptions]);
 
   const login = () => {
     authClient?.login({

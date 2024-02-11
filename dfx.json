@@ -28,6 +28,13 @@
       },
       "source": ["frontend/template/out"],
       "type": "assets"
+    },
+    "bapp_marketplace": {
+      "frontend": {
+        "entrypoint": "frontend/bapp-marketplace/out/index.html"
+      },
+      "source": ["frontend/bapp-marketplace/out"],
+      "type": "assets"
     }
   },
   "dfx": "0.15.3",

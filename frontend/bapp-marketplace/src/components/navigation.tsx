@@ -3,9 +3,9 @@
 import { Fragment, useState } from "react";
 import {
   Bars3Icon,
-  HomeIcon,
+  // HomeIcon,
   GlobeAltIcon,
-  UsersIcon,
+  // UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
@@ -13,11 +13,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 
-import { BASE_URL } from "constants/urls";
 import { shortenWalletAddress as shortenPrincipalName } from "utils/text";
 import { cn } from "utils/tailwind";
 import { useAuth } from "utils/useAuthClient";
-import { getLocationOrigin } from "next/dist/shared/lib/utils";
+// import { getLocationOrigin } from "next/dist/shared/lib/utils";
 
 const navigation = [
   { name: "All", href: "/", icon: GlobeAltIcon, current: true },
@@ -118,7 +117,7 @@ export default function Navigation({
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                     <div className="flex h-16 shrink-0 items-center">
-                      <Link href={BASE_URL}>
+                      <Link href="/">
                         <Image
                           className="h-8 w-auto"
                           src="/wall3.jpg"
@@ -194,7 +193,7 @@ export default function Navigation({
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
             <div className="flex h-16 shrink-0 items-center">
-              <Link href={BASE_URL}>
+              <Link href="/">
                 <Image
                   className="h-8 w-auto"
                   src="/wall3.jpg"

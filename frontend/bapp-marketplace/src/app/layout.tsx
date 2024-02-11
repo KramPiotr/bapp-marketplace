@@ -2,7 +2,6 @@ import "styles/global.css";
 
 import { Inter } from "next/font/google";
 
-import { BASE_URL } from "constants/urls";
 import * as React from "react";
 
 import { ChakraProvider } from "@chakra-ui/react";
@@ -11,16 +10,11 @@ const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-
 export const metadata = {
-  metadataBase: new URL(BASE_URL),
   title: "Wall3 bApps",
   description: "marketplace for Wall3 bApps",
   creator: "Piotr Kram",
   publisher: "Piotr Kram",
-  alternates: {
-    canonical: BASE_URL,
-  },
   robots: {
     index: true,
     follow: true,
@@ -30,12 +24,11 @@ export const metadata = {
     },
   },
   openGraph: {
-    url: BASE_URL,
     title: "Wall3",
     description: "Home of web3",
     images: [
       {
-        url: `${BASE_URL}/wall3.png`,
+        url: `/wall3.jpg`,
         width: 1200,
         height: 630,
         alt: "Wall3",
