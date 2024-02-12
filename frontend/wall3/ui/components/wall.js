@@ -124,6 +124,7 @@ export default function Wall() {
         blockData.owner = `0x${index}`
         blockData.content = `text:Hello  ${index}`
       } else if (randomTypeIndex === 1) {
+        blockData.type = "wallLink";
         blockData.wallLink = `/${index}`
         blockData.owner = `0x${index}`
       } else if (randomTypeIndex === 2) {
