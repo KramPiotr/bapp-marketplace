@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 function Available({ blockData }) {
-  const router = useRouter();
+  // const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
   function handleBlockClick() {
     const currentParams = new URLSearchParams(
@@ -15,7 +15,14 @@ function Available({ blockData }) {
 
     currentParams.set("editBlock", blockData.id);
 
-    router.push(`${pathname}?${currentParams.toString()}`);
+    // router.push(`${pathname}?${currentParams.toString()}`);
+
+    const marketplaceID = process.env.NEXT_PUBLIC_BAPP_MARKETPLACE_CANISTER_ID;
+    const url = process.env.DFX_NETWORK === "ic" ? 
+      `https://${marketplaceID}.icp0.io/?id=${blockData.id}` :
+      `http://127.0.0.1:4943/?canisterId=${marketplaceID}&?id=${blockData.id}`
+    
+    window.open(url, "_blank")
   }
 
   return (

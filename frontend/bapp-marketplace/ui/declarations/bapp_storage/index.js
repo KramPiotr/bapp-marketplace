@@ -11,7 +11,10 @@ export { idlFactory } from "./bapp_storage.did.js";
  */
 export const canisterId =
   process.env.CANISTER_ID_BAPP_STORAGE ||
-  process.env.NEXT_PUBLIC_BAPP_STORAGE_CANISTER_ID;
+  process.env.NEXT_PUBLIC_BAPP_STORAGE_CANISTER_ID ||
+  "kjjxd-riaaa-aaaal-adtcq-cai";
+
+console.log("Here we really need the env variable to be set correctly " + JSON.stringify(process.env))
 
 export const createActor = (canisterId, options = {}) => {
   const agent = options.agent || new HttpAgent({ ...options.agentOptions });

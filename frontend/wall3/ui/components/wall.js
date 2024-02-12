@@ -1,47 +1,58 @@
-"use client";
+"use client"
 
-import { useMemo, useState, useEffect, useCallback } from "react";
-import Image from "next/image";
+import { useMemo, useState, useEffect, useCallback } from "react"
+import Image from "next/image"
 import {
   useParams,
   useSearchParams,
   useRouter,
-  usePathname,
-} from "next/navigation";
-import { PencilIcon } from "@heroicons/react/24/outline";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import Block from "./block";
-import Button from "./button";
-// import { EditBlockDialog } from "./editBlockDialog";
-import WelcomeDialog from "./welcomeDialog";
+  usePathname
+} from "next/navigation"
+import { PencilIcon } from "@heroicons/react/24/outline"
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch"
+import Block from "./block"
+import Button from "./button"
+import WelcomeDialog from "./welcomeDialog"
 
-import { WALL_TOTAL_BLOCKS } from "../constants/wall";
-import { BLOCK_WIDTH, BLOCK_HEIGHT } from "../constants/block";
-import { cn } from "../utils/tailwind";
-import { useAuth } from "../service/use-auth-client";
+import { WALL_TOTAL_BLOCKS } from "../constants/wall"
+import { BLOCK_WIDTH, BLOCK_HEIGHT } from "../constants/block"
+import { cn } from "../utils/tailwind"
+import { useAuth } from "../service/use-auth-client"
+import { makeBAppStorageActor } from "../service/actor-locator"
 
 export default function Wall() {
-  const params = useParams();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-  const { provider } = useAuth();
+  const params = useParams()
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+  const { provider } = useAuth()
 
   const selectMultipleBlocksOn =
-    searchParams.get("selectMultipleBlocks") === "true";
-  const editBlockParam = searchParams.get("editBlock");
+    searchParams.get("selectMultipleBlocks") === "true"
+  const editBlockParam = searchParams.get("editBlock")
   const wallId = decodeURIComponent(params?.id?.toString() ?? "0")
     .toString()
-    .toLowerCase();
-  const wallIdInt = isNaN(parseInt(wallId)) ? 0 : parseInt(wallId);
+    .toLowerCase()
+  const wallIdInt = isNaN(parseInt(wallId)) ? 0 : parseInt(wallId)
 
-  const [welcomeDialogOpen, setWelcomeDialogOpen] = useState(false);
-  const [editBlockDialogOpen, setEditBlockDialogOpen] =
-    useState(false);
-  const [selectedBlocks, setSelectedBlocks] = useState(
-    new Map(),
-  );
-  const [wallCollection] = []; //TODO: fill out
+  const [welcomeDialogOpen, setWelcomeDialogOpen] = useState(false)
+  const [editBlockDialogOpen, setEditBlockDialogOpen] = useState(false)
+  const [blocksFilled, setFilledBlocks] = useState([]);
+  const [selectedBlocks, setSelectedBlocks] = useState(new Map())
+  const [wallCollection] = [] //TODO: fill out
+
+  useEffect(() => {
+    const actor = makeBAppStorageActor()
+    actor.getAllIDs().then(async ids_filled => {
+      const blocksFilled = await Promise.all(
+        ids_filled.map(async id => ({
+          id: `${id}`,
+          type: "nft-minter",
+          content: `nftCollectionID:${await actor.getBlock(id)}`, //
+        }))
+      )
+      setFilledBlocks(blocksFilled);
+  })}, [])
   // useCollection(
   //   query(
   //     collection(db, "blocks"),
@@ -55,70 +66,70 @@ export default function Wall() {
 
   useEffect(() => {
     if (editBlockParam && !selectMultipleBlocksOn) {
-      setEditBlockDialogOpen(true);
+      setEditBlockDialogOpen(true)
     } else {
-      setEditBlockDialogOpen(false);
+      setEditBlockDialogOpen(false)
     }
-  }, [editBlockParam, selectMultipleBlocksOn]);
+  }, [editBlockParam, selectMultipleBlocksOn])
 
   const handleEditDialogOpen = useCallback(
-    (setOpen) => {
+    setOpen => {
       const currentParams = new URLSearchParams(
-        Array.from(searchParams.entries()),
-      );
+        Array.from(searchParams.entries())
+      )
 
       if (setOpen) {
         currentParams.set(
           "editBlock",
-          selectedBlocks ? Array.from(selectedBlocks.keys()).join(",") : "",
-        );
+          selectedBlocks ? Array.from(selectedBlocks.keys()).join(",") : ""
+        )
       } else {
         // Add single selected block to selected
         if (currentParams.get("editBlock")?.split(",").length === 1) {
-          const newSelectedBlocks = new Map();
+          const newSelectedBlocks = new Map()
 
           newSelectedBlocks.set(
             currentParams.get("editBlock")?.toString() ?? "",
             {
-              selected: true,
-            },
-          );
+              selected: true
+            }
+          )
 
-          setSelectedBlocks(newSelectedBlocks);
+          setSelectedBlocks(newSelectedBlocks)
         } else {
-          setSelectedBlocks(new Map());
+          setSelectedBlocks(new Map())
         }
 
-        currentParams.delete("editBlock");
+        currentParams.delete("editBlock")
       }
 
-      router.push(`${pathname}?${currentParams.toString()}`);
+      router.push(`${pathname}?${currentParams.toString()}`)
     },
-    [pathname, router, searchParams, selectedBlocks],
-  );
+    [pathname, router, searchParams, selectedBlocks]
+  )
 
   //TODO change to real data (maybe shouldn't be array?)
   const generateRandomWallData = useMemo(() => {
-    const wallData = [];
+    const wallData = []
     for (let i = 0; i < WALL_TOTAL_BLOCKS; i++) {
-      const wallIdInt = parseInt(wallId);
+      const wallIdInt = parseInt(wallId)
       const index =
-        wallIdInt === 0 ? i + 1 : i + wallIdInt * WALL_TOTAL_BLOCKS + 1;
+        wallIdInt === 0 ? i + 1 : i + wallIdInt * WALL_TOTAL_BLOCKS + 1
 
-      const blockData = { id: i.toString() };
+      const blockData = { id: i.toString() }
 
-      const randomTypeIndex = Math.floor(Math.random() * 4);
+      const randomTypeIndex = Math.floor(Math.random() * 4)
       if (randomTypeIndex === 0) {
-        blockData.type = "text";
-        blockData.owner = `0x${index}`;
-        blockData.content = `text:Hello  ${index}`;
+        blockData.type = "text"
+        blockData.owner = `0x${index}`
+        blockData.content = `text:Hello  ${index}`
       } else if (randomTypeIndex === 1) {
-        blockData.wallLink = `/${index}`;
-        blockData.owner = `0x${index}`;
+        blockData.wallLink = `/${index}`
+        blockData.owner = `0x${index}`
       } else if (randomTypeIndex === 2) {
-        blockData.type = "image";
-        blockData.owner = `0x${index}`;
-        blockData.content = "img:/icp.png|alt:icp";
+        blockData.type = "image"
+        blockData.owner = `0x${index}`
+        blockData.content = "img:/icp.png|alt:icp"
       }
 
       // if (i === 212) {
@@ -128,67 +139,84 @@ export default function Wall() {
       //   blockData.height = 4;
       // }
 
-      wallData.push(blockData);
+      wallData.push(blockData)
     }
+      for (const block of blocksFilled) {
+        const id = Number(block.id)
+        if (id) {
+          wallData[id] = block
+          console.log("Setting " + JSON.stringify(block))
+        }
+      }
 
-    return wallData;
-  }, [wallId]);
+    // const getIDs = async () => await actor.getAllIDs();
+    // const ids_filled = await getIDs();
+    // const blocks_filled = Promise.all(ids_filled.map(async (id) => ({
+    //   id,
+    //   type: "nft-minter",
+    //   collectionID: await actor.getBlock(id)
+    // })))
+    // for (const block of blocks_filled) {
+    //   wallData[Number(block.id)] = block;
+    // }
+
+    return wallData
+  }, [wallId, blocksFilled])
 
   let populatedWallData = useMemo(() => {
-    const wallData = wallCollection?.docs || [];
-    const populatedWallData = Array.from(
-      { length: 288 },
-      (_, i) => {
-        const index = i + 1;
+    const wallData = wallCollection?.docs || []
+    const populatedWallData = Array.from({ length: 288 }, (_, i) => {
+      const index = i + 1
 
-        // if (i === 212) {
-        //   return {
-        //     id: index.toString(),
-        //     type: "profile",
-        //     isFirstBlock: true,
-        //     width: 4,
-        //     height: 4,
-        //   };
-        // }
+      // if (i === 212) {
+      //   return {
+      //     id: index.toString(),
+      //     type: "profile",
+      //     isFirstBlock: true,
+      //     width: 4,
+      //     height: 4,
+      //   };
+      // }
 
-        const existingBlock = wallData.find(
-          (block) => block?.data()?.id === index.toString(),
-        );
+      const existingBlock = wallData.find(
+        block => block?.data()?.id === index.toString()
+      )
 
-        return existingBlock?.data()?.id
-          ? (existingBlock?.data())
-          : { id: index.toString() };
-      },
-    );
+      return existingBlock?.data()?.id
+        ? existingBlock?.data()
+        : { id: index.toString() }
+    })
 
-    return populatedWallData;
-  }, [wallCollection?.docs]);
+    return populatedWallData
+  }, [wallCollection?.docs])
 
-  populatedWallData = generateRandomWallData;
+  populatedWallData = generateRandomWallData
 
   const renderBlocks = useMemo(() => {
     return (
       <>
         {populatedWallData.map((blockData, i) => {
-          const blockId = blockData.id;
+          const blockId = blockData.id
           const isOwner =
-            !!blockData?.owner && !!provider && blockData?.owner === provider.toString();
+            !!blockData?.owner &&
+            !!provider &&
+            blockData?.owner === provider.toString()
 
           if (selectMultipleBlocksOn) {
             function handleBlockSelect() {
               if (!selectedBlocks) {
-                setSelectedBlocks(new Map());
+                setSelectedBlocks(new Map())
               }
 
               if (selectedBlocks?.has(blockId.toString())) {
-                selectedBlocks?.delete(blockId.toString());
+                selectedBlocks?.delete(blockId.toString())
               } else {
                 // TODO probably some more efficient way to do this
                 if (!blockData?.owner || isOwner)
-                  selectedBlocks?.set(blockId.toString(), { selected: true });
+                  selectedBlocks?.set(blockId.toString(), { selected: true })
               }
 
-              setSelectedBlocks(new Map(selectedBlocks));
+              setSelectedBlocks(new Map(selectedBlocks))
             }
 
             return (
@@ -200,17 +228,17 @@ export default function Wall() {
                 <div
                   style={{
                     width: BLOCK_WIDTH,
-                    height: BLOCK_HEIGHT,
+                    height: BLOCK_HEIGHT
                   }}
                 ></div>
                 <div
                   className={cn(
                     "absolute left-0 top-0 z-10 box-border flex cursor-pointer border-2 border-transparent bg-transparent hover:border-emerald-400",
-                    blockData?.isFirstBlock ? "overflow-visible" : "z-0",
+                    blockData?.isFirstBlock ? "overflow-visible" : "z-0"
                   )}
                   style={{
                     width: BLOCK_WIDTH * (blockData?.width ?? 1),
-                    height: BLOCK_HEIGHT * (blockData?.height ?? 1),
+                    height: BLOCK_HEIGHT * (blockData?.height ?? 1)
                   }}
                 >
                   <Block key={blockId} blockData={blockData} />
@@ -221,18 +249,18 @@ export default function Wall() {
                     selectedBlocks?.has(blockId.toString())
                       ? "border-emerald-400"
                       : isOwner
-                        ? "border-orange-700"
-                        : "border-transparent",
-                    blockData?.isFirstBlock ? "overflow-visible" : "z-20",
+                      ? "border-orange-700"
+                      : "border-transparent",
+                    blockData?.isFirstBlock ? "overflow-visible" : "z-20"
                   )}
                   onClick={handleBlockSelect}
                   style={{
                     width: BLOCK_WIDTH * (blockData?.width ?? 1),
-                    height: BLOCK_HEIGHT * (blockData?.height ?? 1),
+                    height: BLOCK_HEIGHT * (blockData?.height ?? 1)
                   }}
                 />
               </div>
-            );
+            )
           }
 
           return (
@@ -244,57 +272,57 @@ export default function Wall() {
               <div
                 style={{
                   width: BLOCK_WIDTH,
-                  height: BLOCK_HEIGHT,
+                  height: BLOCK_HEIGHT
                 }}
               ></div>
               <div
                 className={cn(
                   "absolute left-0 top-0 z-10 box-border flex cursor-pointer border-2 border-transparent bg-transparent hover:border-emerald-400",
                   blockData?.isFirstBlock ? "overflow-visible" : "z-0",
-                  isOwner ? "border-orange-700" : "border-transparent",
+                  isOwner ? "border-orange-700" : "border-transparent"
                 )}
                 style={{
                   width: BLOCK_WIDTH * (blockData?.width ?? 1),
-                  height: BLOCK_HEIGHT * (blockData?.height ?? 1),
+                  height: BLOCK_HEIGHT * (blockData?.height ?? 1)
                 }}
               >
                 <Block blockData={blockData} />
               </div>
             </div>
-          );
+          )
         })}
       </>
-    );
-  }, [provider, populatedWallData, selectMultipleBlocksOn, selectedBlocks]);
+    )
+  }, [provider, populatedWallData, selectMultipleBlocksOn, selectedBlocks])
 
   function handleConfirmSelection() {
     if (selectedBlocks) {
       const currentParams = new URLSearchParams(
-        Array.from(searchParams.entries()),
-      );
+        Array.from(searchParams.entries())
+      )
 
-      currentParams.delete("selectMultipleBlocks");
+      currentParams.delete("selectMultipleBlocks")
       currentParams.set(
         "editBlock",
-        selectedBlocks ? Array.from(selectedBlocks.keys()).join(",") : "",
-      );
+        selectedBlocks ? Array.from(selectedBlocks.keys()).join(",") : ""
+      )
 
-      router.push(`${pathname}?${currentParams.toString()}`);
+      router.push(`${pathname}?${currentParams.toString()}`)
     }
   }
 
   function handleEditClick() {
     const currentParams = new URLSearchParams(
-      Array.from(searchParams.entries()),
-    );
+      Array.from(searchParams.entries())
+    )
 
     if (currentParams.get("selectMultipleBlocks") === "true") {
-      currentParams.delete("selectMultipleBlocks");
+      currentParams.delete("selectMultipleBlocks")
     } else {
-      currentParams.set("selectMultipleBlocks", "true");
+      currentParams.set("selectMultipleBlocks", "true")
     }
 
-    router.push(`${pathname}?${currentParams.toString()}`);
+    router.push(`${pathname}?${currentParams.toString()}`)
   }
 
   return (
@@ -379,7 +407,7 @@ export default function Wall() {
           wallData={populatedWallData}
         />
       )} */}
-      {/* <WelcomeDialog open={welcomeDialogOpen} setOpen={setWelcomeDialogOpen} /> */}
+      <WelcomeDialog open={welcomeDialogOpen} setOpen={setWelcomeDialogOpen} />
     </>
-  );
+  )
 }

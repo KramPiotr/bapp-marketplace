@@ -1,7 +1,7 @@
 import {
-  createActor as createTemplateBackendActor,
-  canisterId as templateBackendCanisterID
-} from "../declarations/template_backend"
+  createActor,
+  canisterId
+} from "../../ui/declarations/bapp_storage"
 
 export const makeActor = (canisterId, createActor) => {
   return createActor(canisterId, {
@@ -11,6 +11,6 @@ export const makeActor = (canisterId, createActor) => {
   })
 }
 
-export function makeTemplateBackendActor() {
-  return makeActor(templateBackendCanisterID, createTemplateBackendActor)
+export function makeBAppStorageActor() {
+  return makeActor(canisterId, createActor)
 }

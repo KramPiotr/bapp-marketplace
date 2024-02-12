@@ -33,4 +33,11 @@ actor {
   func getIDKey(id: ID) : Trie.Key<ID> {
     { key = id; hash = Text.hash(id) };
   };
+
+  public func getAllIDs() : async [ID] {
+    let allIDs = Trie.toArray<ID, {owner: Owner; data: Data}, ID>(
+      blocks,
+      func (k, v) = k
+    );
+  };
 };

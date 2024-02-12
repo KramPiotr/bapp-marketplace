@@ -1,6 +1,7 @@
 type ID = text;
 type Data = text;
 service : {
+  getAllIDs: () -> (vec ID);
   getBlock: (ID) -> (Data);
   storeBlock: (ID, Data) -> (text);
 }
