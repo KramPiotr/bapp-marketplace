@@ -11,8 +11,10 @@ Wall-3 is a big dashboard of block apps (bApps) which are decentalized, programm
 So far in the prototype I implemented a couple of types of blocks:
 -	A text block
 -	An image block
--	A link block - leading to subpage of Wall-3
+-	A link block - leading to a subpage of Wall-3 (think recursively)
 -	And a more advanced NFT minter block - an app that serves as a template and an example of how to develop bApps
+
+I created a block App marketplace as well that is used to create and customize the bApps.
 
 However, in the future the blocks (and groups of blocks) could be of various shapes and forms, like:
 - a DEX UI
@@ -22,13 +24,28 @@ However, in the future the blocks (and groups of blocks) could be of various sha
 - Telegram UI
 - calendar for web3 events
 - maps of the web3 world
+- adverts for different web3 solutions
+- calendars and descriptions of different hackathons
+- dashboards of podcasts and videos about web3
+- novel social media platform
+- web3 wikipedia
 - etc.
+- an LLM/AI block that would let you search wall-3 and show derived path from the root, think the intersection of Google and Chat-GPT for web3
+
+Basically the bApps can be programmed to do whatever people think is most needed, accurate and important to put up on the homepage.
 
 The blocks can form groups. This means that more important concepts can take up more tiles than the less important ones. This is a great tool to quickly visualize the state of the web3 world (e.g. there could be a subpage with market capitalization etc.)
 
 The link blocks will lead to thematic subpages - think tree-like structure of web3 knowledge. For example the main homepage could contain sublinks to "ZK", "Layer 1", "Layer 2" etc., however the governing DAO and people decide.
 
-I created a block App marketplace as well that is used to create and customize the bApps.
+The further down the tree, the less important the things are and cost less money to rent out etc. We could even do it so that at some point you reach your personal wall-3 page, the public version as well as the private version accessible after confirming your IC identity.
+
+I believe that with the correct execution of the Wall-3 idea this could become the replacement of Google, social media, Chat-GPT for the web3 world and not only. For this purpose we need to:
+- make sure that the governance system is quick, efortless and adaptive to changes of the Wall-3 structure
+- make sure that the block UI is as customizable as possible and provides a very smooth UX
+- make sure that the search and LLM functionality is implemented from day 1 (I believe these are crucial for smooth UX)
+
+## IC
 
 IC is a perfect fit for Wall-3 because of:
 - **wallet-free experience** - i.e. users much more willing to interact with Wall-3, especially the newcomers, 
@@ -84,7 +101,7 @@ https://youtu.be/Yq8anqlLUzk
 
 ## Inspirations
 
-- the million dollar page
+- the million dollar homepage
 - google 
 - wikipedia
 
@@ -97,12 +114,13 @@ https://youtu.be/Yq8anqlLUzk
 - create more template bApps
 - add subtree functionalities
 - create and calculate the financial model of the application
+- add search and LLM functionalities
 
 ## Code documentation
 
-- **backend/bapp_storage** - code for the Wall-3 storage
-- **backend/bapp_storage_prototype** - here I started coding up a bit more advanced approach that stored each bApp as an NFT. I will continue working on that but currently it's not being used
-- **backend/template** - here is the back-end code for the NFT app
+- **backend/bapp_storage** - code for the Wall-3 storage; written in Motoko
+- **backend/bapp_storage_prototype** - here I started coding up a bit more advanced approach that stored each bApp as an NFT. I will continue working on that but currently it's not being used; written in Motoko
+- **backend/template** - here is the back-end code for the NFT app; written in Motoko
 - **frontend/wall3** - Next.js code of Wall-3
 - **frontend/bapp-marketplace** - Next.js code of the bApp marketplace
 - **frontend/template** - Next.js code of the NFT app
