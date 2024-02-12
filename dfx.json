@@ -35,6 +35,13 @@
       },
       "source": ["frontend/bapp-marketplace/out"],
       "type": "assets"
+    },
+    "wall3": {
+      "frontend": {
+        "entrypoint": "frontend/wall3/out/index.html"
+      },
+      "source": ["frontend/wall3/out"],
+      "type": "assets"
     }
   },
   "dfx": "0.15.3",
