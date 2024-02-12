@@ -18,19 +18,19 @@ Currently there is no charge for interacting with any of the above applications 
 
 ### Front-end
 
+https://jz25f-niaaa-aaaal-adtkq-cai.icp0.io/ - Wall-3
+
+https://koirx-4qaaa-aaaal-adtca-cai.icp0.io/ - bApp marketplace
+
 https://uxz2k-jyaaa-aaaal-adoia-cai.icp0.io/ - creating an NFT collection
 
 https://uxz2k-jyaaa-aaaal-adoia-cai.icp0.io/mint?id=826798517 - minting an NFT
 
-https://koirx-4qaaa-aaaal-adtca-cai.icp0.io/ - bApp marketplace
-
-unavailable at the moment because of lack of cycles, will be updated soon - Wall-3
-
 ### Back-end
 
-https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=wkeuc-2qaaa-aaaal-adohq-cai - NFT app backend
-
 https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=kjjxd-riaaa-aaaal-adtcq-cai - Wall-3 storage backend
+
+https://a4gq6-oaaaa-aaaab-qaa4q-cai.raw.icp0.io/?id=wkeuc-2qaaa-aaaal-adohq-cai - NFT app backend
 
 ## Running instructions
 
