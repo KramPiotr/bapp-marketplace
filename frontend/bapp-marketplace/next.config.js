@@ -4,8 +4,22 @@
  */
 // await import("./src/env.js");
 
+import { initCanisterIds } from "./dfx.webpack.config.cjs";
+initCanisterIds();
+
 /** @type {import("next").NextConfig} */
 const config = {
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    // Plugin
+
+    const EnvPlugin = new webpack.EnvironmentPlugin({
+      DFX_NETWORK: "local",
+    });
+    config.plugins.push(EnvPlugin);
+
+    // Important: return the modified config
+    return config;
+  },
   // images: {
   //   domains: ["via.placeholder.com"],
   // },
@@ -26,7 +40,7 @@ const config = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
 };
 
 export default config;

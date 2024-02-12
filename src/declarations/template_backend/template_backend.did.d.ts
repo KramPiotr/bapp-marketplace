@@ -25,4 +25,5 @@ export interface _SERVICE {
   >,
   'getNFTData' : ActorMethod<[string], NFTData>,
   'mintNFT' : ActorMethod<[string, Principal], MintReceipt>,
+  'whoami' : ActorMethod<[], Principal>,
 }

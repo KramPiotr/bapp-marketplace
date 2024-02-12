@@ -1,0 +1,6 @@
+type ID = text;
+type Data = text;
+service : {
+  getBlock: (ID) -> (Data);
+  storeBlock: (ID, Data) -> (text);
+}

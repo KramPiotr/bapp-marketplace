@@ -1,6 +1,7 @@
 #!/usr/bin/env zsh
 
 dfx deploy template_backend
+dfx deploy bapp_storage
 dfx deploy template_frontend
 dfx deploy bapp_marketplace
 dfx deploy wall3

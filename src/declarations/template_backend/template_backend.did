@@ -39,4 +39,5 @@ service : {
    (NFTCreationResult);
   getNFTData: (text) -> (NFTData);
   mintNFT: (text, principal) -> (MintReceipt);
+  whoami: () -> (principal);
 }

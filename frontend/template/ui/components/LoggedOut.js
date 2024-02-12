@@ -4,6 +4,7 @@ import { useAuth } from "../service/use-auth-client";
 
 function LoggedOut() {
   const { login } = useAuth()
+  console.log("process env " + JSON.stringify(process.env, null, 2))
 
   return (
     <Box display="flex" flexDirection="column" alignItems="center" gap="4" mt="4">

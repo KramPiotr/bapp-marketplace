@@ -1,23 +1,21 @@
-const DFXWebPackConfig = require("./dfx.webpack.config")
-DFXWebPackConfig.initCanisterIds()
+import { initCanisterIds } from "./dfx.webpack.config"
+initCanisterIds()
 
-const webpack = require("webpack")
+import { EnvironmentPlugin } from "webpack"
 
 // Make DFX_NETWORK available to Web Browser with default "local" if DFX_NETWORK is undefined
-const EnvPlugin = new webpack.EnvironmentPlugin({
+const EnvPlugin = new EnvironmentPlugin({
   DFX_NETWORK: "local"
 })
 
-module.exports = {
-  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-    // Plugin
-    config.plugins.push(EnvPlugin)
+export function webpack(config, { buildId, dev, isServer, defaultLoaders, webpack }) {
+  // Plugin
+  config.plugins.push(EnvPlugin)
 
-    // Important: return the modified config
-    return config
-  },
-  output: "export",
-  images: {
-    unoptimized: true
-  }
+  // Important: return the modified config
+  return config
+}
+export const output = "export"
+export const images = {
+  unoptimized: true
 }

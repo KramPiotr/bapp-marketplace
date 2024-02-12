@@ -28,6 +28,7 @@ export const idlFactory = ({ IDL }) => {
       ),
     'getNFTData' : IDL.Func([IDL.Text], [NFTData], []),
     'mintNFT' : IDL.Func([IDL.Text, IDL.Principal], [MintReceipt], []),
+    'whoami' : IDL.Func([], [IDL.Principal], []),
   });
 };
 export const init = ({ IDL }) => { return []; };

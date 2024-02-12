@@ -7,6 +7,13 @@
         "node_compatibility": true
       }
     },
+    "bapp_storage": {
+      "main": "backend/bapp_storage/Main.mo",
+      "type": "motoko",
+      "declarations": {
+        "node_compatibility": true
+      }
+    },
     "internet_identity": {
       "type": "pull",
       "id": "rdmx6-jaaaa-aaaaa-aaadq-cai"
@@ -30,6 +37,7 @@
       "type": "assets"
     },
     "bapp_marketplace": {
+      "dependencies": ["template_backend", "internet_identity", "bapp_storage"],
       "frontend": {
         "entrypoint": "frontend/bapp-marketplace/out/index.html"
       },
@@ -37,6 +45,7 @@
       "type": "assets"
     },
     "wall3": {
+      "dependencies": ["template_backend", "internet_identity", "bapp_storage"],
       "frontend": {
         "entrypoint": "frontend/wall3/out/index.html"
       },

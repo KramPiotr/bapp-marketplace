@@ -1,43 +1,36 @@
 import Trie "mo:base/Trie";
 import Text "mo:base/Text";
 import Principal "mo:base/Principal";
-import NFT "./NFT";
-import Types "Types";
-import Cycles "mo:base/ExperimentalCycles";
 
 actor {
+  type ID = Text;
+  type Owner = Text;
+  type Data = Text;
 
-  stable var nftBlockStore : Trie.Trie<Principal, NFT.Dip721NFT> = Trie.empty();
+  stable var blocks: Trie.Trie<ID, {owner: Owner; data: Data}> = Trie.empty();
 
-  public func getNFTCollection(principal : Principal) : async Principal {
-
-    let idKey = getIDKey(principal);
-    let nftCollectionForPrincipal = Trie.find(nftBlockStore, idKey, Principal.equal);
-    switch (nftCollectionForPrincipal) {
+  public func getBlock(id: ID) : async Data {
+    let idKey = getIDKey(id);
+    let data = Trie.find(blocks, idKey, Text.equal);
+    switch (data) {
       case (null) {
-        let logo : Types.LogoResult = { logo_type = ""; data = "" };
-        let nft : Types.Dip721NonFungibleToken = {
-          logo = logo;
-          name = debug_show (principal);
-          symbol = debug_show (principal);
-          maxLimit = 100;
-        };
-        Cycles.add(200_000_000_000);
-        let nftCollection = await NFT.Dip721NFT(principal, nft);
-        let cyclesAccepted = await nftCollection.wallet_receive();
-
-        nftBlockStore := Trie.put(nftBlockStore, idKey, Principal.equal, nftCollection).0;
-        return Principal.fromActor(nftCollection);
-
+        return "<EMPTY>";
       };
-      case (?nftCollection) {
-        return Principal.fromActor(nftCollection);
-
-      };
-    };
+      case (?actualData) {
+        return actualData.data;
+      }
+    }
   };
 
-  func getIDKey(nftID : Principal) : Trie.Key<Principal> {
-    { key = nftID; hash = Principal.hash(nftID) };
+  public shared (message) func storeBlock(id : ID, data : Data) : async Text {
+    // change to caller
+    let idKey = getIDKey(id);
+    let owner = Principal.toText(message.caller);
+    blocks := Trie.put(blocks, idKey, Text.equal, { owner = owner; data = data }).0;
+    return "Block added successfully!";
+  };
+
+  func getIDKey(id: ID) : Trie.Key<ID> {
+    { key = id; hash = Text.hash(id) };
   };
 };
